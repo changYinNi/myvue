@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="demo"></div>
+    <div id="app">{{name}}</div>
+    <script src="vue.js"></script>
+    <script>
+        var div = document.querySelector(".demo");
+        var string = "vscode创建html文件...";
+        div.innerHTML = string;
+
+      
+        new Vue({
+            el: '#app',
+            data: {
+                name: 'vue入门'
+            }
+        })
+
+    
+        //   MVC model:模型(数据) view:视图(结构) controller:控制
+        //   MVVM: model:模型(数据) data
+        //         view:视图(结构) el #app
+        //         viewmodel: 控制 new Vue()
+        //         控制拿到模型, 将数据渲染到视图中          
+         
+         
+        
+    </script>
+</body>
+</html>
