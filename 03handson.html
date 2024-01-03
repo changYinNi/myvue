@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03handson</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h2>{{title}}</h2>
+        <ul>
+            <li v-for="(food,index) in foods">
+                菜单:{{food.name}}, 
+                <button @click="add(food)">+</button>
+                <span v-if="food.num > 0">数量:{{food.num}}</span>
+                <span v-else>到头了, 减不了了</span>
+                <button @click="minus(food)">-</button>
+                <button @click="del(index)">删除</button>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        console.dir(Vue);
+        const vmObj = new Vue({
+            el: '#app',
+            data: {
+                title: '点个菜', /*到控制台手动输入vmObj和vmObj.title, 并填写vmObj.title = '头顶黑', 可看到浏览器中title值有变化 */
+                foods:[
+                    {name: '昂刺鱼', num: 0},
+                    {name: '银鱼', num: 0},
+                    {name: '鲈鱼', num: 0}
+                ]
+            },
+            methods:{
+                add(food){
+                    food.num++;
+                },
+                minus(food){
+                    food.num--;
+                    /*
+                    if(food.num > 0){
+                        food.num--;
+                    }else{
+                        food.num = '到头了, 减不了了';
+                    }
+                    */
+                },
+                del(index){
+                    this.foods.splice(index, 1);    /*从下标index开始删除, 删掉一个*/
+                    /*操作控制台: 添加 this.foods.push({name: '鲫鱼', num: 0});
+                        删除数组第0位 this.foods.shift();
+                    */
+                }
+            }
+        });
+    </script>
+</body>
+</html>
