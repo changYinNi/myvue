@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03上手vue.html</title>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>{{title}}</h1>
+    </div>
+
+    <script>
+        console.dir(Vue);
+        //const: ES6中声明常量的语法
+        const vm = new Vue({        //控制层vm
+            el : '#app',            //视图层el
+            data:{                  //数据层
+                title: "点个菜",
+                foods: [
+                    {name: ''},
+                ]     
+            }             
+        });
+    </script>
+</body>
+</html>

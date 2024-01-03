@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>认识vue</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div class="demo"></div>
+    <div id="app">{{name}}</div>
+
+    <script>
+        var div = document.querySelector(".demo");
+        var str = "课如一";
+        div.innerHTML = str;
+
+        new Vue({
+            el: '#app',
+            data: {
+                name: '课如二'
+            }
+        });
+    </script>
+    <!--
+    MVC
+        model: data
+        view: div_app
+        controller: new Vue
+        通过controller控制层将model数据渲染到view视图层, 并且三者之间相互独立
+    MVVM 
+        model: data
+        view: div_app
+        VM: view-Model 
+    -->
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02结识vue</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div class="demo"></div>
+    <div id="app">{{name}}</div>
+    <!--
+        库: 把一些常用的功能封装成一个一个函数或者对象, 放到一个js文件里面, 目的是为了简化原生js操作, 它是一个封装好的集合
+        框架: 一套架构,提供一整套解决方案, 能完全搞定整个项目开发, 并且很轻松就能解决复杂的问题，比较大功能也很全
+        vue特点:(1) 组件化 (2) 响应式 (3)
+
+        MVC:
+            Model: 模型(数据)
+            view:  视图(结构)
+            Controller: 控制
+
+        MVVM:
+            Model: 模型(数据)           -> data
+            view:  视图(结构)           -> el
+            VM-ViewModel: 控制          -> new Vue()
+            通过控制层将数据渲染到视图层中
+    -->
+    <script>
+        var demo = document.querySelector('.demo');
+        var str = "库: 把一些常用的功能封装成一个一个函数或者对象, 放到一个js文件里面, 目的是为了简化原生js操作, 它是一个封装好的集合";
+        demo.innerHTML = str;
+
+        new Vue({
+            el: '#app',
+            data:{
+                name: '框架: 一套架构,提供一整套解决方案, 能完全搞定整个项目开发, 并且很轻松就能解决复杂的问题，比较大功能也很全'
+            }
+        });
+    </script>
+</body>
+</html>
