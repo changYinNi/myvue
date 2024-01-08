@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>元素和数据</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div class="app">
+        {{name}}
+        <h3>{{age}}</h3>
+        <h3>{{whchat}}</h3>
+    </div>
+    <script>
+        const vmObj = new Vue({
+            el: ".app",
+            /*防止组件内同名data数据更改 */
+            data(){
+                return {
+                    name: '课如一',
+                    age: 40,
+                    whchat: '' /*在控制台中修改 vmObj.whchat = '三花'*/
+                }
+            }
+        });
+    </script>
+</body>
+</html>

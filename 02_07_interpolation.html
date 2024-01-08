@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插值</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h3>Hi: {{name}}</h3><!-- {{}} 插值符号 -->
+        {{tag}}
+        <p v-html="tag"></p>
+        <p>{{height + 10}}</p>
+        <p>{{height.toString().split('').join('-')}}</p>
+        <p>
+            Hi: {{name}},
+            <span v-pre>开饭了</span><!-- v-pre注解的标签不参与编译 -->
+        </p>
+    </div>
+    <script>
+        const vmObj = new Vue({
+            el: "#app",
+            data:{
+                name: '猫们',
+                tag: '<h3>狸花猫</h3>',
+                height: 180
+            }
+        });
+    </script>
+</body>
+</html>

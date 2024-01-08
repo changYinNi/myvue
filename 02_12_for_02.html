@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>就地更新策略</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div class="app">
+        <ul>
+            <!-- 就地更新策略: 数据更新后, 更改对应dom的数据, key会给dom添加唯一标识, 虚拟dom会根据dom值的变化更新key对应的标签, key的值需要有唯一 -->
+            <li v-for="(wang,index) in wangs" v-bind:key="wang.name">
+                {{wang.name}}&nbsp;&nbsp;
+                <input type="text" />
+                <button v-on:click="move(index)">下移</button>
+            </li>
+        </ul>
+    </div>
+    
+    <script>
+        const vmObj = new Vue({
+            el: '.app',
+            data: {
+                wangs: [
+                    {name: '老王', age: 70},
+                    {name: '大王', age: 40},
+                    {name: '小王', age: 10},
+                    {name: '小小王', age: 3}
+                ]
+            },
+            methods:{
+                /*
+                    splice(index, howmany, item1,...,itemx): 有删除, 插入, 替换三项作用, 返回一个数组, 
+                    包含从原来数组中删除的项, 如果没有删除则返回一个空数组
+                    参数: index: 必选, 整数, 规定添加或者删除的位置, 使用负数, 从数组尾部规定位置
+                    howmany: 必选, 需要删除的数量, 如果为0, 则不删除项目
+                    item1,...,itemx: 可选, 向数组添加新的项
+
+                */
+                move(index){
+                    const currentItem = this.wangs.splice(index, 1);
+                    this.wangs.splice(index + 1, 0, ...currentItem); //... 扩展运算符, 获取当前选中项的数据
+                }
+            }
+        });
+    </script>
+    
+</body>
+</html>

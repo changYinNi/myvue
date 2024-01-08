@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表渲染</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div class="app">
+        <ul>
+            <li v-for="color in colors">{{color}}</li>
+            <hr />
+            <li v-for="(wang,index) in wangs">{{wang.name}}的年龄是{{wang.age}}, 索引为{{index}}</li>
+            <hr />
+            <li v-for="(value,key,index) in anhui">属性值:{{value}}, 属性名:{{key}}, 索引为{{index}}</li>
+            <hr />
+            <li v-for="(wang,index) in adult">{{wang.name}}的年龄是{{wang.age}}, 索引为{{index}}</li>
+        </ul>
+    </div>
+    <script>
+        const arr = ['html','css','js'];
+        console.log(arr);
+
+        const vmObj = new Vue({
+            el: '.app',
+            data: {
+                colors: ['red', 'blue', 'green'],
+                wangs: [
+                    {name: '老王', age: 70},
+                    {name: '大王', age: 40},
+                    {name: '小王', age: 10},
+                ],
+                anhui: {
+                    name: '黄山',
+                    age: '356',
+                    area: 14,
+                    person: 6127
+                },
+                adult: []
+            }
+        });
+
+        vmObj.adult = vmObj.wangs.filter(item => item.age > 18);
+        console.log(vmObj.adult);
+    </script>
+</body>
+</html>

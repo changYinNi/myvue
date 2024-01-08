@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指令</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <a v-bind:href="blog">博客邮箱</a>
+        <input type="text" v-bind:value="name" v-bind:[attr]="name" />
+        <p :id="false?'yes':'no'" v-on:click.once="print">这个值为{{result}}</p> <!-- 指令绑定表达式 -->
+    </div>
+    <script>
+        /*
+            指令: 带有v-前缀的特殊属性
+            比如 v-for, v-if
+            并不是所有的指令都可以添加参数: 只有v-bind, v-on,v-slot可以
+            以上三条指令可以缩写v-bind缩写为 ':'
+            可以添加修饰符的指令有: v-model, v-bind, v-on
+        */
+        const vmObj = new Vue({
+            el: '#app',
+            data:{
+                name: '头顶黑',
+                age: '1',
+                blog: 'anhuidetwo1513@163.com',
+                result: false?'yes':'no',
+                attr: 'class' //v-bind指令绑定的属性为input标签的class, 使用[]
+            },
+            methods: {
+                print(){
+                    console.log('once只可以打印一次...');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

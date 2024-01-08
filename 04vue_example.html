@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>04Vue实例</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+    <script>
+        const vmObj = new Vue({
+            el: "#app",
+            data:{
+                name: "老倪",
+                age: 40,
+                wechat: '月光树影'
+            },
+            methods: {
+                minus(){
+                    this.age--;
+                }
+            }
+        });
+        console.log(vmObj.constructor == Vue);           /*"实例的构造方法指向Vue对象"*/
+        console.log(vmObj instanceof Vue);              /* vmObj是对象Vue的实例 */
+
+        console.log(vmObj);
+        console.log(vmObj.$el);
+        console.log(vmObj._data);
+        console.log(vmObj.$data);
+        console.log(vmObj._data.wechat);
+        console.log(vmObj.name);
+        vmObj.minus();
+        /* vmObj实例代理了data里面的数据, 还代理了methods里面的方法 */
+    </script>
+</body>
+</html>

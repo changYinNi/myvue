@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件</title>
+    <script src="vue.js"></script>
+    <style>
+        .div{
+            width: 200px;
+            height: 200px;
+            background-color: blue;
+            margin-top: 20px;
+        }
+        .p{
+            width: 100px;
+            height: 100px;
+            background-color: blueviolet;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <input type="text" v-bind:value="age" />
+        <!--传递事件对象参数需要使用$符号, $event-->
+        <button v-on:click="add('tom',$event)">加一天</button>
+        <button @click="minus()">减一天</button>
+
+        <div class="div" v-on:click="divClick">
+            <p class="p" v-on:click.stop="pClick"></p><!-- v-on:click.stop 阻止事件冒泡: 只触发pclick, 阻止触发divClick-->
+        </div>
+
+        <div class="div" v-on:click="divClick">
+            <a href="www.baidu.com" v-on:click.prevent.stop="aclick">个人博客</a>
+        </div>
+    </div>
+
+    <script>
+        const vmObj = new Vue({
+            el: '.app',
+            data: {
+                age: 18
+            },
+            methods: {
+                add(msg, event){
+                    this.age++;
+                    console.log(msg);
+                    console.log(event);     //传递事件对象参数需要使用$符号, $event
+                },
+                minus(){
+                    if(this.age > 0){
+                        this.age--;         //@click是v-on:click 的缩写
+                    }                    
+                },
+                divClick(){
+                    console.log('div被点击了...');
+                },
+                pClick(){
+                    console.log('p被点击了...');
+                },
+                aclick(){
+                    console.log('a标签被点击了...');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
