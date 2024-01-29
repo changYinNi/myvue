@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <my-component></my-component>
+    </div>
+    <script>
+        //如果组件声明是MyComponent, 在html里面解析还是my-component
+        Vue.component('my-component',{
+            //使用function返回值来规避其它组件调用后更改, 如果使用对象, 其它组件更改相同的值后会影响结果
+            data(){
+                return{
+                    count: 0
+                }
+            },
+            //组件的结构
+            template: '<button v-on:click="add()">你点了{{count}}次</button>',
+            methods: {
+                add(){
+                    this.count++;
+                }
+            },
+            computed: {}
+        });
+        Vue.component('MyComponent', {});
+        const vmObj = new Vue({
+            el: '#app',
+            data: {
+                count: 0
+            },
+            methods: {},
+            computed: {},
+            //这种写法也能被div识别调用, 查找Vue.component('MyComponent', {});
+            template: '<MyComponent></MyComponent>',
+            //也可以 
+            template: '<my-component></my-component>',
+            //或者
+            //template: '<MyComponent/>'
+        });
+    </script>
+</body>
+</html>

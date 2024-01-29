@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据更新方法</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="(wang,index) in wangs">{{wang.name}}&nbsp;&nbsp;
+                <button v-on:click="move(index)">点俺瞧瞧啊</button>
+            </li>
+            <p>{{teacher.name}}&nbsp;&nbsp;<button v-on:click="change">修改删除</button></p>
+        </ul>
+    </div>
+    <script>
+        const vmObj = new Vue({
+            el: '#app',
+            data: {
+                wangs: [
+                    {name: '老王', age: 70},
+                    {name: '大王', age: 40},
+                    {name: '小王', age: 10},
+                    {name: '小小王', age: 3},
+                ],
+                teacher:{
+                    name: '课如一'
+                }
+            },
+            methods: {
+                move(index){
+                    //this.wangs[index] = {name: '小小王', age: 2};//会覆盖, 不能渲染
+                    //this.wangs[index].name = '小小小王';  //会覆盖, 可以渲染
+                    //或者
+                    this.$set(this.wangs, 3, {name: '小小小王', age: 2});
+
+                    //改为添加
+                    //this.wangs[this.wangs.length] = {name: '小小小王', age: 2};  //可以添加进去
+                    this.wangs.push({name: '小小小王', age: 2});
+                    
+                    //删除
+                    this.$delete(this.wangs, 2);                    
+                },
+                change(){
+                    //$set操作对象属性, 第二项参数为key值, 第三个参数是被修改后的值
+                    this.$set(this.teacher, 'name', '课如二');  
+                    this.$delete(this.teacher, 'name');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

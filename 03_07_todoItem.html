@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>待办事项</title>
+    <script src="vue.js"></script>
+    <style>
+        h2 {
+			margin: 0;
+		}
+ 
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+ 
+		input,
+		button {
+			padding: 0;
+			box-sizing: border-box;
+			vertical-align: middle;
+			outline: none;
+		}
+ 
+		#todoList {
+			width: 500px;
+			padding: 30px;
+			box-sizing: border-box;
+			border-radius: 5px;
+			border: 1px solid #a3a3a3;
+			box-shadow: 0 0 10px #575757;
+			margin: 100px auto 0 auto;
+		}
+ 
+		#todoList h2 {
+			text-align: center;
+			font-size: 26px;
+			margin: 20px 0;
+		}
+ 
+		.done {
+			margin-bottom: 30px;
+			display: flex;
+			justify-content: space-between;
+		}
+ 
+		.done input,
+		.done button,
+		#todoList li {
+			height: 50px;
+			font-size: 20px;
+			border: 1px solid #999;
+		}
+ 
+		.done input {
+			width: 80%;
+			color: #757575;
+			padding-left: 10px;
+		}
+ 
+		.done button {
+			padding: 0 15px;
+			cursor: pointer;
+		}
+ 
+		#todoList li {
+			border: none;
+			border-bottom: 1px solid #F5F5F5;
+		}
+ 
+		#todoList li input[type="checkbox"] {
+			width: 18px;
+			height: 18px;
+		}
+ 
+		#todoList li button {
+			cursor: pointer;
+			float: right;
+			width: 26px;
+			height: 26px;
+			color: #fff;
+			background: #ccc;
+			font-size: 20px;
+			border: 1px solid #ccc;
+			text-align: center;
+			border-radius: 50%;
+			position: relative;
+			top: 15px;
+		}
+ 
+		#todoList li button:hover {
+			color: #f00;
+			background: #fff;
+			border-color: #f00;
+		}
+ 
+		.control {
+			height: 50px;
+			line-height: 50px;
+			display: flex;
+			justify-content: space-between;
+		}
+ 
+		.control span:nth-child(1),
+		.control span:nth-child(3) {
+			color: #df2c0e;
+			cursor: pointer;
+		}
+ 
+		.control span:nth-child(2) {
+			color: #65ad50;
+        }
+    </style>
+</head>
+<body>
+    <div id="todoList" v-on:click="clearInput()">
+        <h2>待办事项</h2>
+        <div class="done">
+            <input type="text" value="请输入待办事项" v-model="thing" name="" id="">
+			<button v-on:click="add()">添加</button>
+        </div>
+        <ul>
+            <li v-for="(item, index) in array" v-bind:key="item.des">
+                <input type="checkbox" name="" id="" v-bind:value="item.des" v-model="checkedthing">
+                <span v-show="!item.edit" v-on:click.stop="edit(index)">{{item.des}}</span>
+                <input type="text" v-show="item.edit" v-model="item.des" v-on:click.stop="" name="" id="">
+                <button v-on:click="del(index)">X</button>
+            </li>
+        </ul>
+        <div class="control">
+            <span><input type="checkbox" v-bind:checked="allSelected" v-on:click="selectedAll($event)" name="" id="">全选</span>
+            <span>共{{array.length}}项, 选中{{checkedthing.length}}项</span>
+            <span v-on:click="delAll()">批量删除</span>
+        </div>
+    </div>
+    <script>
+        const vmObj = new Vue({
+            el: '#todoList',
+            data: {
+                array: [
+                    {des: '吃饭', edit: false},
+                    {des: '睡觉', edit: false},
+                    {des: '打豆豆', edit: false}
+                ],
+				thing: '',				//用户输入框中的内容
+				checkedthing: []		//用户已经选择的项
+            },
+			methods: {
+				add(){
+					if(this.thing == ''){
+						window.alert("请输入内容...");
+						return;
+					}
+					this.array.push({des: this.thing, edit: false});
+					this.thing = '';
+				},
+				edit(index){
+					this.array[index].edit = true;
+				},
+				clearInput(){
+					this.array.forEach(element => {
+						element.edit = false;
+					});
+				},
+				selectedAll(event){
+					const checkedAll = [];
+					this.array.forEach(item => {
+						checkedAll.push(item.des);
+					});
+					//event.target为触发控件
+					console.log(event.target);
+					this.checkedthing = event.target.checked ? checkedAll: []
+				},
+				del(index){
+					//if 条件成立说明要删除的选项是选中的
+					if(this.checkedthing.includes(this.array[index].des)){
+						this.checkedthing.splice(index, 1);
+					}
+					this.array.splice(index, 1);
+				},
+				delAll(){
+					//在原始数组中过滤已经选择的项
+					this.array = this.array.filter(item => {
+						return !this.checkedthing.includes(item.des);
+					});
+					this.checkedthing = [];
+				}
+			},
+			computed: {
+				allSelected(){
+					return this.array.length != 0 && this.array.length == this.checkedthing.length;
+				}
+			}
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>侦听器</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{firstName}}: {{lastName}}
+        <button v-on:click="change()">变化1</button>
+        <hr />
+        {{handlerName}}
+        <hr />
+        {{author.name}}: {{author.age}}岁
+    </div>
+    <script>
+        const vmObj = new Vue({
+            el: '#app',
+            data: {
+                firstName: 'foo',
+                lastName: 'bar',
+                handlerName: 'handlerName',
+                author: {
+                    name: '三花猫',
+                    age: 2,
+                    status: {
+                        sleep: '贪睡',
+                        food: '贪吃'
+                    }
+                }
+            },
+            methods: {
+                change(){
+                    this.firstName = '三花猫';
+                    //侦听器watch: author可以侦听
+                    //this.author = {name: '白猫', age: 3};
+                    //对象部分属性变化, 侦听器watch: author侦听不到
+                    this.author.name = '橘白猫';
+                },
+                lastNameChange(newValue, oldValue){
+                    console.log('lastNameChange新值为: ' + newValue);
+                    console.log('lastNameChange旧值为: ' + oldValue);
+                }
+            },
+            watch: {
+                //方式1: 将要改变的属性值写为同名方法放到侦听器watch中, 
+                //当firstName值发生变化时, 会触发firstName(newValue, oldValue)方法
+                firstName(newValue, oldValue){
+                    console.log('firstName新值为: ' + newValue);
+                    console.log('firstName旧值为: ' + oldValue);
+                },
+
+                //方式2: 侦听器watch里面设置和methods里面一致的方法
+                // 启用F12控制台, 在控制台选项中输入vmObj.lastName = '输入值'触发效果
+                lastName: 'lastNameChange',
+
+                //方式3: 使用handler
+                // 启用F12控制台, 在控制台选项中输入vmObj.handlerName = '输入值'触发效果
+                handlerName: {
+                    handler(newValue, oldValue){
+                        console.log('handlerName新值为: ' + newValue);
+                        console.log('handlerName旧值为: ' + oldValue);
+                    }
+               },
+               //侦听不到对象部分改变, 可以侦听对象全部改变
+               // 启用F12控制台, 在控制台选项中输入author.name = '输入值'触发效果
+               author: {
+                    handler(newValue, oldValue){
+                        console.log('author新值为: ' + newValue);
+                        console.log('author旧值为: ' + oldValue);
+                    },
+                    //deep: true //开启深度侦听才可以侦听对象部分改变
+               },
+               //deep: true 比较消耗性能, 改为直接监听需要改变的属性, 可写为字符串格式, 可在控制台验证
+               // 启用F12控制台, 在控制台选项中输入author.status.food = '顽皮猫粮'触发效果
+               'author.status.food': function(newValue, oldValue){
+                        console.log('author.status.food新值为: ' + newValue);
+                        console.log('author.status.food旧值为: ' + oldValue);
+               }
+            }
+        });
+
+        //启用F12控制台, 在控制台选项中输入author.status.sleep = '顽皮猫粮',
+        //再次输入author.status.sleep = '猫咪睡觉' 触发效果
+        //三次输入author.status.sleep = '猫咪睡觉1' 触发效果
+        const unwatch = vmObj.$watch('author.status.sleep', function(newValue, oldValue){
+            console.log('author.status.sleep新值为: ' + newValue);
+            console.log('author.status.sleep旧值为: ' + oldValue);
+            if(newValue == '猫咪睡觉'){
+                unwatch();      //停止监听
+                return;
+            }
+        },{
+            deep: true,
+            immediate: true
+        });
+    </script>
+</body>
+</html>

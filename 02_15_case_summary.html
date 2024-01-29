@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案例总结</title>
+    <script src="vue.js"></script>
+    <style>
+		body {
+			background: #b5abb3;
+		}
+
+		dl,
+		dd,
+		h3,
+		p {
+			margin: 0;
+		}
+ 
+		ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+ 
+		#app {
+			width: 850px;
+			background: rgba(255, 255, 255, 0.8);
+			box-shadow: 0 0 10px #494242;
+			margin: 50px auto;
+		}
+ 
+		#app dl {
+			height: 50px;
+			line-height: 50px;
+			border-bottom: 1px dashed #fad8e6;
+			display: flex;
+			margin: 0 20px;
+		}
+ 
+		#app dt {
+			color: #8a8a8a;
+		}
+ 
+		#app dd {
+			color: #252525;
+			margin: 0 10px;
+			font-size: 14px;
+			cursor: pointer;
+		}
+ 
+		#app dd.active {
+			color: #c4284d;
+		}
+ 
+		.select {
+			height: 50px;
+			padding: 0 20px;
+			background: #ebe4e4;
+			display: flex;
+			align-items: center;
+		}
+ 
+		.select h3 {
+			font-weight: normal;
+			color: #8a8a8a;
+			font-size: 16px;
+		}
+ 
+		.select p {
+			color: #ababaa;
+			font-size: 14px;
+		}
+ 
+		.select ul {
+			display: flex;
+		}
+ 
+		.select li {
+			border: 1px solid #c4284d;
+			padding: 0 2px 0 10px;
+			margin: 0 10px;
+		}
+ 
+		.select li span {
+			width: 20px;
+			height: 20px;
+			display: inline-block;
+			text-align: center;
+			line-height: 20px;
+			background: #c4284d;
+			color: #fff;
+			margin-left: 10px;
+			cursor: pointer;
+		}
+	</style>
+
+</head>
+<body>
+    <div id="app">
+        <dl v-for="(good, i) in goodsList" v-bind:key="good.id">
+            <dt>{{good.title}}: </dt>
+            <dd v-for="(item, j) in good.list" v-bind:key="item" v-on:click="selected(item, j, good, i)" v-bind:class="{active: j === good.cn}">
+				{{item}}
+			</dd>
+        </dl>        
+        <div class="select">
+            <h3>已选条件: </h3>
+            <p v-if="isItDisplayed">没有选择条件</p>
+            <ul>
+                <li v-for="(value, key) in selectedGoods">{{value}}<span v-on:click="deleteSelect(key)">X</span></li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        const vmObj = new Vue({
+            el: '#app',
+            data: {
+                selectedGoods: {
+					/*	
+						这个对象放的是选中的数据, 它是一个对象, 目的是为了每行数据只能选中一个
+						'0': '惠普',
+						'1': '4000-4999',
+						'2': '14英寸',
+						'3': '集成显卡'
+					*/
+                },
+                goodsList: [
+                    {
+                        title: '品牌',
+                        list: ['惠普', '联想', '戴尔', '三星', '宏基', '苹果', '神舟', '华硕', '方正'],
+                        id: 1
+                    },
+                    {
+                        title: '价格',
+                        list: ['3000-3999', '4000-4999', '5000-5999', '6000-6999', '7000-7999', '8000-8999', '9000-9999', '10000以上'],
+                        id: 2
+                    },
+                    {
+                        title: '尺寸',
+                        list: ['8.9英寸以及以下', '11英寸', '12英寸', '13英寸', '14英寸', '15英寸', '16英寸'],
+                        id: 3
+                    },
+                    {
+                        title: '显卡',
+                        list: ['独立显卡', '集成显卡', '核芯显卡'],
+                        id: 4
+                    },
+                ]
+            },
+            methods:{
+                selected(item, j, good, i){
+                    //console.log(item, j, i);
+					/*
+						item: 品牌, 价格 ...
+						j: 品牌, 价格 的索引
+						good: 一行的分类数据
+						i: 每一行数据的索引
+					*/
+					//点击的时候给每一行数据添加一个cn, 它的值对应的就是点击的那个元素的索引, 为了添加class
+					good.cn = j;
+					this.$set(this.selectedGoods, i, item);
+                },
+				deleteSelect(key){
+					this.$delete(this.selectedGoods, key);
+					//将当前选中的一行数据的cn的值设为空, 它与j就不等了, class表达式结果为false, class所在的样式就取消了
+					this.goodsList[key].cn = '';
+				}
+            },
+			computed:{
+				isItDisplayed(){
+					if(Object.keys(this.selectedGoods).length > 0){
+						return false;
+					}
+					return true;
+				}
+			}
+        });
+    </script>
+</body>
+</html>

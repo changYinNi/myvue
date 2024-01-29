@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>侦听器和计算属性的区别</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>
+            计算属性和侦听器的区别:
+            (1) 侦听模式: 计算属性是多对一, 只要计算属性其中一部分有变化, 计算属性都可以侦听到随之改变<br />;
+             侦听器一对多，一条数据生成多条数据，源数据发生变化时, 被生成的数据也会发生变化<br />
+            (2) 异步操作: 计算属性不支持, 侦听器支持
+        </p>
+        <p>fullNameComputed: {{fullNameComputed}}</p>
+        <p>fullNameWatch: {{fullNameWatch}}</p>
+        <p>getAsynchronous: {{getAsynchronous}}</p>
+        <p>asynchronous: {{asynchronous}}|| {{asyncName}}</p>
+    </div>
+    <script>
+        const vmObj = new Vue({
+            el: '#app',
+            data: {
+                firstName: '狸花猫',
+                lastName: '腿腿',
+                fullNameWatch: '狸花猫 腿腿',
+                asyncName: '异步操作',
+                asynchronous: ''
+            },
+            computed: {
+                fullNameComputed(){
+                    return this.firstName + ' ' + this.lastName;
+                },
+                getAsynchronous(){
+                    var name = '异步编排';
+                    setTimeout(() => {
+                        name = '异步编排改变computed';
+                    }, 1000);
+                    return this.asyncName + '--' + name; 
+                }
+            },
+            watch: {
+                firstName(){
+                    this.fullNameWatch =  this.firstName + ' ' + this.lastName;
+                },
+                lastName(){
+                    this.fullNameWatch =  this.firstName + ' ' + this.lastName;
+                },
+                asyncName(){
+                    var name = '异步编排';
+                    //启用F12控制台, 在控制台选项中输入vmObj.asyncName = '输入值'触发效果
+                    setTimeout(()=> {
+                        name = '异步编排改变watch';
+                        console.log('name: ' + name);
+                        this.asynchronous = this.asyncName + '--' + name; 
+                        console.log('asynchronous: ' + this.asynchronous);
+                    }, 1000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

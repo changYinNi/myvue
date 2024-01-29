@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插槽</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <section-head v-slot:default>
+            <template>
+                <h3>新品首发-通过插槽添加内容</h3>
+            </template>            
+        </section-head>
+        <named-slotfirst>
+            <template v-slot:first>
+                <h3>人气推荐-再来一个也会显示: 和下面的template: namedSlotfirst对应</h3>
+            </template>            
+        </named-slotfirst>
+    </div>
+
+    <template id="head">
+        <div class="title">
+            <slot></slot>   <!-- 默认插槽 -->
+        </div>
+    </template>
+
+    <template id="namedSlotfirst">
+        <div class="title">
+            <slot name="first"></slot>    <!-- 具名插槽 -->            
+        </div>
+    </template>
+
+    <script>
+        const vmObj = new Vue({
+            el: '#app',
+            components: {
+                SectionHead: {
+                    template: '#head'
+                },
+                NamedSlotfirst: {
+                    template: '#namedSlotfirst'
+                }
+            }
+        });
+    </script>
+</body>
+</html>

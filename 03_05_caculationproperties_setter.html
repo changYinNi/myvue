@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算属性</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>{{methodsName()}}</p>
+        <p>{{computedName}}</p>
+    </div>
+    <script>
+        const vmObj = new Vue({
+            el: '#app',
+            data: {
+                firstName: 'foo',
+                lastName: 'bar'
+            },
+            methods: {
+                methodsName(){
+                    return this.firstName + '_' + this.lastName;
+                }
+            },
+            computed: {
+                // computedName(){
+                //     return this.firstName + '_' + this.lastName;
+                // }
+                //计算属性可以设置值, 方法不能设置值只可获取值
+                computedName: {
+                    get(){
+                        return this.firstName + '_' + this.lastName;  
+                    },
+                    set(param){
+                        this.firstName = param[0];
+                        this.lastName = param.substr(1);
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>局部组件</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <counter></counter>
+        <hr />
+        <color></color>
+    </div>
+    
+    <div id="box">        
+        <!-- 提示组件未在div中注册
+            <color></color> -->
+    </div>
+
+    <template id="count">
+        <div>
+            <button v-on:click="add()">你点了{{count}}次</button>
+            <span>点了{{count}}次啊...</span>
+        </div>
+    </template>    
+    
+    <template id="colour">
+        <div>
+            <h3 v-bind:style="colourStyle">{{colourText}}</h3>
+        </div>        
+    </template>
+    
+    <script>
+        const vmObj = new Vue({
+            el: '#app',
+            components: {
+                Counter: {
+                    data(){
+                        return {
+                            count: 0
+                        }
+                    },
+                    template: '#count',
+                    methods: {
+                        add(){
+                            this.count++;
+                        }
+                    }
+
+                },
+                Color: {
+                    data(){
+                        return {
+                            colourText: '红色',
+                            colourStyle: {
+                                color: 'red'
+                            }
+                        }
+                    },
+                    template: '#colour'
+                },
+                Name: {},
+            }
+        });
+
+        const box = new Vue({
+            el: '#box'
+        });
+    </script>
+</body>
+</html>

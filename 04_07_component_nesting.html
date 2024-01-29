@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件嵌套</title>
+    <script src="vue.js"></script>
+    <style>
+        body{
+            margin: 0;
+            font-size: 14px;
+        }
+        h3{
+            margin: 0;
+        }
+        .title{
+            width: 1000px;
+            padding: 0 20px;
+            height: 50px;
+            line-height: 50px;
+            margin: 20px auto;
+            background: #f4f0ea;
+        }
+        .title h3{
+            float: left;
+            font-size: 28px;
+            margin-right: 20px;
+        }
+        .subtitle{
+            float: left;
+        }
+        .more{
+            float: right;
+            margin-left: 30px;
+        }
+        .title a{
+            color: #333;
+            text-decoration: none;
+        }
+        .title a:hover,.title a.active{
+            color: #b4a078;
+            border-bottom: 2px solid #b4a078;;
+        }
+        .tab{
+            float: left;
+        }
+        .subnav{
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <section-head>
+            <template v-slot:title>
+                <h3>新品首发</h3>
+            </template>
+            <template v-slot:subtitle> <!-- 也可以写作 #subtitle -->
+                <span class="subtitle">为你寻觅世间好物</span>
+            </template>
+            <template v-slot:more>
+                <div class="more">
+                    <a href="#">更多新品</a>
+                </div>
+            </template>
+        </section-head>
+
+        <section-head>
+            <template v-slot:more>
+                <div class="more">
+                    <a href="#">更多新品</a>
+                </div>
+            </template>
+
+            <template v-slot:title>
+                <h3>人气推荐</h3>
+            </template>
+
+            <!-- <template v-slot:tab>
+                <div class="tab">
+                    <a href="#" class="active">编辑推荐</a>
+                    <a href="#">热销总榜</a>
+                </div>
+            </template> -->
+        </section-head>
+
+        <section-head>
+            <template v-slot:title>
+                <h3>福利社</h3>
+            </template>
+
+            <template v-slot:more class="more">
+                <div class="more">
+                    <a href="#">查看全部福利</a>
+                </div>
+            </template>
+        </section-head>
+
+        <section-head>
+            <template v-slot:title>
+                <h3>居家生活</h3>
+            </template>
+            <template v-slot:more class="more">
+                <div class="more">
+                    <a href="#">查看更多</a>
+                </div>
+            </template>
+            <!-- <template v-slot:subnav>
+                <div class="subnav">
+                    <a href="#">好物精选</a> / <a href="#">秋冬焕新</a> / <a href="#">疫情防控</a> / <a href="#">收纳好物</a> / <a href="#">北欧原木</a> / <a href="#">餐厨爆款清单</a> / <a href="#">厨房电器</a>
+                </div>
+            </template> -->
+        </section-head>
+    </div>
+
+    <template id="head">
+        <div class="title">
+            <slot name="title"></slot>
+            <slot name="subtitle"></slot>
+            <!-- 子组件只能在父组件中使用,只需要在父组件中调用即可,不需要插槽-->
+            <tab>
+                <template v-slot:tab1>
+                    <a href="#" class="active">编辑推荐</a>
+                </template>
+                <template v-slot:tab2>
+                    <a href="#">热销总榜</a>
+                </template>
+            </tab>
+            
+            <slot name="more"></slot>
+            <!-- <slot name="subnav"></slot> -->
+
+            <subnav>
+                <template v-slot:subnav>
+                    <a href="#">好物精选</a> / <a href="#">秋冬焕新</a> / <a href="#">疫情防控</a> / <a href="#">收纳好物</a> 
+                    / <a href="#">北欧原木</a> / <a href="#">餐厨爆款清单</a> / <a href="#">厨房电器</a>
+                </template>
+            </subnav>
+        </div>
+    </template>
+
+    <!-- 子组件的模板 -->
+    <template id="tab">
+        <div class="tab">
+            <slot name="tab1"></slot>
+            <slot name="tab2"></slot>
+        </div>
+    </template>
+
+    <template id="subnav">
+        <div class="subnav">
+            <slot name="subnav"></slot>
+        </div>
+    </template>
+
+    <script>
+        const vmObj = new Vue({
+            el: '#app',
+            components: {
+                SectionHead: {
+                    template: '#head',
+                    components: {
+                        Tab: {
+                            template: '#tab'  
+                        },
+                        SubNav: {
+                            template: '#subnav'
+                        }
+                    }                    
+                }
+            }
+        });
+    </script>
+</body>
+</html>

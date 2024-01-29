@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Props</title>
+    <script src="vue.js"></script>
+    <style>
+        body {
+			background: #e2e2e2;
+		}
+ 
+		h3,
+		h4,
+		p {
+			margin: 0;
+		}
+ 
+		.box {
+			width: 500px;
+			background: #fff;
+			padding: 10px 20px 20px;
+			margin: 50px;
+		}
+ 
+		.box h3 {
+			color: #2cbd53;
+			border-bottom: 1px solid #E8ECEE;
+			margin-bottom: 20px;
+			padding-bottom: 10px;
+		}
+ 
+		.box div {
+			overflow: hidden;
+		}
+ 
+		.box div img {
+			float: left;
+			margin-right: 15px;
+		}
+ 
+		.box div h4 {
+			color: #333;
+			font-size: 20px;
+			line-height: 20px;
+			padding: 10px 0 20px 0;
+		}
+ 
+		.box div p {
+			color: #8b8b8b;
+			font-size: 14px;
+			line-height: 22px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <article-list box-title="软笔书法一" img-src="images/001.jpg" article-title="福字" article-content="软笔书法“福”字"></article-list>
+        <article-list box-title="软笔书法二" img-src="images/002.jpg" article-title="篷字" article-content="软笔书法“篷”字"></article-list>
+        <article-list v-bind:box-title="title" img-src="images/003.jpg" article-title="媛字" v-bind:article-content="content"></article-list>
+    </div>
+    <template id="box">
+        <div class="box">
+            <h3>{{boxTitle}}</h3>
+            <div>
+                <img v-bind:src="imgSrc" alt="" width="100" height="100">
+                <div>
+                    <h4>{{articleTitle}}</h4>
+                    <p>{{articleContent}}</p>
+                </div>
+            </div>
+        </div>
+    </template>
+    <script>
+        //父组件
+        const vmObj = new Vue({
+             el: '#app',
+             data(){
+                return {
+                    title: '动态传递属性值',
+                    content: 'props将父组件的属性值传递给子组件使用'
+                }
+             },
+             components: {
+                //子组件
+                ArticleList: {
+                    template: '#box',
+                    props: ['boxTitle', 'imgSrc', 'articleTitle', 'articleContent']
+                }
+             }
+        });
+    </script>
+</body>
+</html>

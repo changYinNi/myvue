@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据双向绑定</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="text" size="100" v-bind:value="message" v-on:input="bidirectional($event)" />
+        <p>{{message}}</p>
+        <hr />
+        <input type="checkbox" v-model="checked" name="" id="" />复选框一
+        <label for="">{{checked}}</label>
+        <hr />
+        <input type="checkbox" v-model="checkedNames" name="" id="and" value="与" />复选框与
+        <label for="and">与</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="checkbox" v-model="checkedNames" name="" id="or" value="或" />复选框或
+        <label for="or">或</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="checkbox" v-model="checkedNames" name="" id="nor" value="非" />复选框非
+        <label for="nor">非</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <p>v-model绑定data.checkedNames和选中项, 当选中项变化时, data.checkedNames也随之变化: {{checkedNames}}</p>
+        <hr />
+        <input type="radio" value="女" v-model="sex" name="" id="woman"><label for="woman">女</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="radio" value="男" v-model="sex" name="" id="man"><label for="man">男</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span>{{sex}}</span>
+        <hr />
+        <select id="city" v-model="city" multiple>
+            <option>贵池</option>
+            <option>铜陵</option>
+            <option>东至</option>
+            <option>石台</option>
+        </select>
+        <span>{{city}}</span>
+        <hr />
+        <input type="text" v-model.lazy="msgLazy" name="" id="msgLazy" size="100"><label for="msgLazy">{{msgLazy}}</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <hr />
+        只能输入数字: 
+        <input type="text" v-model.number="msgNumber" name="" id="" size="100"><label for="msgNumber">{{msgNumber}}</label>&nbsp;&nbsp;&nbsp;&nbsp;
+        <hr />
+        <input type="text" v-model.trim="msgTrim" name="" id="" size="100"><label for="msgTrim">{{msgTrim}}</label>&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+    <script>
+        const vmObj = new Vue({
+            el: '#app',
+            data: {
+                message: '使用$event实现数据双向绑定',
+                checked: false,
+                checkedNames:[],
+                sex: '',
+                city:[],
+                msgLazy: '鼠标离开文本框后改变值',
+                msgNumber: 0,
+                msgTrim: '清除字符串头尾空格'
+            },
+            methods:{
+                bidirectional(event){
+                    console.log(event.target.value);
+                    this.message = event.target.value;      //视图和数据同步发生变化
+                }
+            }
+        });
+    </script>
+</body>
+</html>

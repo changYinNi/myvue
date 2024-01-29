@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>props高级配置</title>
+    <script src="vue.js"></script>
+    <style>
+        body {
+			background: #e2e2e2;
+		}
+ 
+		h3,
+		h4,
+		p {
+			margin: 0;
+		}
+ 
+		.box {
+			width: 500px;
+			background: #fff;
+			padding: 10px 20px 20px;
+			margin: 50px;
+		}
+ 
+		.box h3 {
+			color: #2cbd53;
+			border-bottom: 1px solid #E8ECEE;
+			margin-bottom: 20px;
+			padding-bottom: 10px;
+		}
+ 
+		.box div {
+			overflow: hidden;
+		}
+ 
+		.box div img {
+			float: left;
+			margin-right: 15px;
+		}
+ 
+		.box div h4 {
+			color: #333;
+			font-size: 20px;
+			line-height: 20px;
+			padding: 10px 0 20px 0;
+		}
+ 
+		.box div p {
+			color: #8b8b8b;
+			font-size: 14px;
+			line-height: 22px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <my-color v-bind:data-color-array="colors">
+            <template id="ultag">
+                <ul>
+                  <li v-for='color in dataColorArray' v-bind:key='color'>{{color}}</li>
+                </ul>
+            </template>
+        </my-color>
+        <second-component name="老倪" v-bind:age="'34岁'" v-bind:sing="true" 
+        v-bind:height="'160cm'" v-bind:weight="10"></second-component>
+        <!-- 如果weight给小于0的值会在控制台报验证错误 -->
+    </div>
+    <script>
+        const vmObj = new Vue({
+            el: '#app',
+            data(){
+                return {
+                    colors: ['red', 'green', 'blue']
+                }
+            },
+            components: {
+                MyColor: {
+                    props: ['dataColorArray'],
+                    // template: `<ul>
+                    //         <li v-for='color in dataColorArray' v-bind:key='color'>{{color}}</li>
+                    //     </ul>`
+                    //两种写法都可以
+                    template: '#ultag'
+                },
+                secondComponent: {
+                    props: {
+                        name: {
+                            type: String,
+                            required: true
+                        },
+                        sing: {
+                            type: Boolean
+                        },
+                        age: [Number, String], //多种类型的参数
+                        height: {
+                            type: [String, Number],
+                            default: '165cm'        //没有传递实参就用这个默认值
+                        },
+                        interest: {
+                            type: Array,
+                            default: function(){
+                                return ['古筝','毛笔','猫咪'];  //默认值是数组或者对象, 不可以直接给, 需要使用方法返回值
+                            }
+                        },
+                        weight: {
+                            type: Number, String,
+                            validator: function (val) {
+                                            return val > 0
+                                        }
+                        }
+                    },
+                    template: `<div>
+                            <h3>{{name}}</h3>
+                            <p>唱歌:{{sing? "悦耳动听": "五音不全"}}</p>
+                            <p>多大了: 答{{age}}</p>
+                            <p>身高: 答{{height}}</p>
+                            <p>爱好: {{interest}}</p>
+                            <p>体重: {{weight}}</p>
+                        </div>`
+                }
+            }
+        });
+    </script>
+</body>
+</html>

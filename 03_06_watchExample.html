@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>侦听器例子</title>
+    <style>
+        ul {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+ 
+		#app {
+			font-size: 0;
+			position: relative;
+		}
+ 
+		input {
+			width: 512px;
+			height: 45px;
+			padding: 0 16px;
+			outline: none;
+			border-radius: 10px 0 0 10px;
+			border: 2px solid #c4c7ce;
+			border-right: none;
+			background: #fff;
+			color: #222;
+			vertical-align: middle;
+			box-sizing: border-box;
+		}
+ 
+		button {
+			cursor: pointer;
+			width: 108px;
+			height: 45px;
+			background-color: #4e6ef2;
+			border-radius: 0 10px 10px 0;
+			font-size: 17px;
+			color: #fff;
+			font-weight: bold;
+			border: none;
+			outline: none;
+			vertical-align: middle;
+		}
+ 
+		#app ul {
+			width: 514px;
+			border-radius: 0 0 10px 10px;
+			border: 2px solid #4e71f2;
+			box-sizing: border-box;
+			padding: 0 10px 10px;
+ 
+		}
+ 
+		#app li {
+			font-size: 16px;
+			line-height: 30px;
+			color: #626675;
+        }
+    </style>
+    <script src="jquery-3.6.0.min.js"></script>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="inputValue" v-on:blur="ulDis=false" v-on:founs="ulDis = searchResult.length">
+		<button>百度试试</button>
+		<ul v-show="ulDis">
+			<li v-for="item in searchResult" v-bind:key="item.q">{{item.q}}</li>
+		</ul>
+    </div>
+	<script>
+		const vmObj = new Vue({
+			el: '#app',
+			data: {
+				inputValue: '',
+				searchResult: [],
+				ulDis: false
+			},
+			watch: {
+				inputValue(){
+					$.ajax({			
+						////https://www.baidu.com/sugrec?prod=pc&wd=w			
+						url: 'https://www.baidu.com/sugrec',
+						dataType: 'jsonp',
+						data: {
+							prod: 'pc',
+							wd: this.inputValue
+						},
+						success: function(value){
+							//在这儿this.searchResult取不到searchResult的值
+							vmObj.searchResult = value.g || [];  
+							//console.log(searchResult);
+							vmObj.ulDis = vmObj.searchResult.length;
+						}
+					});
+				}
+			}
+		});
+	</script>
+</body>
+</html>

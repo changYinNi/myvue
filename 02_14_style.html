@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>操作样式</title>
+    <script src="vue.js"></script>
+    <style>
+        .green{
+            color: green;
+        }
+        .red{
+            color: red;
+        }
+        .active{
+            background-color: pink;
+            color: #fff;
+        }
+        .align{
+            text-align: right;
+        }
+        .div{
+            width: 200px;
+            height: 200px;
+            margin-top: 10px;
+            background-color: brown;
+        }
+        .fontStyle {
+            font-size: 20px;
+            color: darkcyan;
+        }
+        .borderStyle {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <h3 class="title" v-bind:class="cl" v-on:click="cli()">普通class绑定, 原生的方法和vue方法添加的class是可以共存的</h3>
+        <hr />
+        <h3 v-bind:class="{active:ac, align:al}" v-on:click="active()">v-bind:class="",可以绑定数组或对象, 对象以键值对形式</h3>
+        <hr />
+        <h3 v-bind:class="classObject">对象语法绑定class, 值为对象名称, 对象里面放的就是class</h3>
+        <hr />
+        <button v-on:click="divclass = !divclass">显示/隐藏div</button>
+        <div v-bind:class="{div: divclass}"></div>
+        <hr />
+        <h3 v-bind:class="classObjectComputed">使用计算属性computed来对class做选择</h3>
+        <hr />
+        <h3 v-bind:class="[fs, bs]">数组语法绑定class, 数组里面放着key, key的value是class名称</h3>
+        <hr />
+        <h3 v-bind:class="[ac? fs: bs]">也可以放表达式</h3>
+        <hr />
+        <h3 v-bind:class="[{active: al},fs]">还可以放对象</h3>
+        <hr />
+        <div v-bind:style="{color: color, fontSize: font}">也可以直接绑定style</div>
+        <hr />
+        <div v-bind:style="styleObj">或者这么些也可以</div>
+    </div>
+    <script>
+        const vmObj = new Vue({
+            el: '.app',
+            data:{
+                cl: 'green',
+                ac: false,
+                al: true,
+                classObject:{
+                    active: false,
+                    align: true
+                },
+                divclass: true,
+                fs: 'fontStyle',
+                bs: 'borderStyle',
+                color: 'blue',
+                font: '20px',
+                styleObj:{
+                    color: 'red',
+                    fontSize: '20px'
+                }
+            },
+            methods: {
+                cli(){
+                    this.cl = 'red';
+                },
+                active(){
+                    this.ac = !this.ac;
+                }
+            },
+            computed:{
+                classObjectComputed(){
+                    return {
+                        active: !this.ac,
+                        align: this.al || false
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算属性</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>模板语法{{height.toString().split('').reverse().join('-')}}</p>
+        <p>方法{{reverseMethod()}}</p>
+        <p>计算属性{{reverseComputed}}</p>
+        <p>
+            {{number}}&nbsp;&nbsp;
+            <button v-on:click="number++">+</button>
+        </p>
+        <p>{{show()}}</p>
+    </div>
+    <script>
+        const vmObj = new Vue({
+            el: '#app',
+            data: {
+                height: 180,
+                number: 10
+            },
+            methods: {
+                reverseMethod(){
+                    console.log("reverseMethod()");
+                    return this.height.toString().split('').reverse().join('-');
+                },
+                show(){
+                    console.log("这是一个方法, 只调用了一次, 诡异的是data数据发生变化了, 这个方法也会被调用...");
+                }
+            },
+            computed:{
+                reverseComputed(){
+                    console.log("reverseComputed()");
+                    return this.height.toString().split('').reverse().join('-');
+                }
+            }
+            /*
+                1: 方法调用的时候需要加(), 计算属性不需要
+                2: 方法的结果不会被缓存, 计算属性的结果会被缓存
+            */
+        });
+    </script>
+</body>
+</html>

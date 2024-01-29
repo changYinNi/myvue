@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>单向数据流</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <hen></hen>
+    </div>
+
+    <template id="hen">
+        <div>
+            母鸡有{{henCount}}只
+            <button v-on:click="addCount">添加数量</button>
+            <chick v-bind:hen-param="henCount"></chick>
+        </div>
+    </template>
+
+    <template id="chick">
+        <div>
+            小鸡有{{henParam}}只
+        </div>
+    </template>
+
+    <script>
+        const vmObj = new Vue({
+            el: '#app',
+            components: {
+                Hen: {
+                    data(){
+                        return {
+                            henCount: 2
+                        }
+                    },
+                    template: '#hen',
+                    methods: {
+                        addCount(){
+                            this.henCount++;
+                        }
+                    },
+                    components: {
+                        Chick: {
+                            props:{
+                                'henParam':{        //henParam: 形参
+                                    type: Number
+                                }       
+                            },
+                            template: '#chick',
+                            methods: {
+                                addChickCount(){
+                                    this.henCount++;
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+                
+            }
+        });
+    </script>
+</body>
+</html>
